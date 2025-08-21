@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 1000001",
+	"properties": {
+		"content": {
+			"query": "-- This is auto-generated code\nSELECT TOP 100\n    jsonContent\n/* --> place the keys that you see in JSON documents in the WITH clause:\n       , JSON_VALUE (jsonContent, '$.key1') AS header1\n       , JSON_VALUE (jsonContent, '$.key2') AS header2\n*/\nFROM\n    OPENROWSET(\n        BULK 'https://storagedatalakeengineer.dfs.core.windows.net/jsoncontainer/sales.json',\n        FORMAT = 'CSV',\n        FIELDQUOTE = '0x0b',\n        FIELDTERMINATOR ='0x0b',\n        ROWTERMINATOR = '0x0b'\n    )\n    WITH (\n        jsonContent varchar(MAX)\n    ) AS [result]\n\n    SELECT\n    JSON_VALUE(doc, '$.orderId') AS OrderID,\n    JSON_VALUE(doc, '$.orderDate') AS OrderDate,\n    JSON_VALUE(doc, '$.customerDevice') AS Device\nFROM OPENROWSET(\n    BULK 'https://storagedatalakeengineer.blob.core.windows.net/jsoncontainer/sales.json',\n    FORMAT = 'CSV',\n    PARSER_VERSION = '2.0'\n) AS rows(doc);\n\nSELECT *\nFROM OPENROWSET(\n    BULK 'https://storagedatalakeengineer.blob.core.windows.net/jsoncontainer/sales.json',\n    FORMAT = 'CSV',\n    PARSER_VERSION = '2.0',\n    FIELDQUOTE = '\"',\n    FIELDTERMINATOR = ','\n) AS rows;\n\nSELECT JSON_VALUE('{\"OrderId\": \"4567\"}', '$.OrderId') AS 'OrderId',\n       JSON_VALUE('{\"orderDate\": \"2022-04-2\"}', '$.orderDate') AS 'OrderDate',\n       JSON_VALUE('{\"OrderSource\":\"webstore\"}', '$.OrderSource') AS 'OrderSource',\n       JSON_VALUE('{\"CustomerDevice\": \"android\"}','$.customerDevice') AS 'CustomerDevice';\n\nDECLARE @data NVARCHAR(MAX) ='sales';\n[\n  {\n    \"orderId\": 4567,\n    \"orderDate\": \"2022-04-28\",\n    \"orderSource\": \"webstore\",\n    \"customerDevice\": \"android\",\n    \"orderDetails\": [\n      {\n        \"productID\": 608,\n        \"orderQuantity\": 5\n      },\n      {\n        \"productID\": 710,\n        \"orderQuantity\": 3\n      }\n    ],\n    \"deliveryAddress\": [\"London\", \"England\"]\n  },\n\nSELECT JSON_VALUE(@data, '$.sales[0].OrderId') AS 'OrderId', \n       JSON_VALUE(@data, '$.sales[0].OrderDate') AS 'OrderDate', \n       JSON_VALUE(@data, '$.sales[0].OrderSource') AS 'OrderSource', \n       JSON_VALUE(@data, '$.sales[0].CustomerDevice') AS 'CustomerDevice', \n       JSON_VALUE(@data, '$.sales[0].OrderQuantity') AS 'OrderQuantity', \n       JSON_VALUE(@data, '$.sales[0].deliveryAddress') AS 'deliveryAddress'; \nUNION ALL\nSELECT JSON_VALUE(@data, '$.sales[1].OrderId') AS 'OrderId', \n       JSON_VALUE(@data, '$.sales[1].OrderDate') AS 'OrderDate', \n       JSON_VALUE(@data, '$.sales[1].OrderSource') AS 'OrderSource', \n       JSON_VALUE(@data, '$.sales[1].CustomerDevice') AS 'CustomerDevice', \n       JSON_VALUE(@data, '$.sales[1].OrderDetails') AS 'OrderDetails', \n       JSON_VALUE(@data, '$.sales[1].productID') AS 'productID', \n       JSON_VALUE(@data, '$.sales[1].OrderQuantity') AS 'OrderQuantity', \n       JSON_VALUE(@data, '$.sales[1].deliveryAddress') AS 'deliveryAddress'; \n\n\n\n\n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

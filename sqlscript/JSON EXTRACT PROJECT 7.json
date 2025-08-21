@@ -1,0 +1,17 @@
+{
+	"name": "JSON EXTRACT PROJECT 7",
+	"properties": {
+		"content": {
+			"query": "\n\n-- Sample JSON\n\nDECLARE @json NVARCHAR(MAX) = '\n[\n  {\n    \"orderId\": 4567,\n    \"orderDate\": \"2022-04-28\",\n    \"orderSource\": \"webstore\",\n    \"customerDevice\": \"android\",\n    \"orderDetails\": [\n      {\n        \"productID\": 608,\n        \"orderQuantity\": 5\n      },\n      {\n        \"productID\": 710,\n        \"orderQuantity\": 3\n      }\n    ],\n    \"deliveryAddress\": [\"London England\"]\n  },\n  {\n    \"orderId\": 4568,\n    \"orderDate\": \"2022-04-29\",\n    \"orderSource\": \"webstore\",\n    \"customerDevice\": \"windows\",\n    \"orderDetails\": [\n      {\n        \"productID\": 780,\n        \"orderQuantity\": 9\n      },\n      {\n        \"productID\": 690,\n        \"orderQuantity\": 6\n      }\n    ],\n    \"deliveryAddress\": [\"King Street Newcastle England\"]\n  }\n]';\n\n-- Query\nSELECT\n    JSON_VALUE(o.value, '$.orderId') AS orderId,\n    JSON_VALUE(o.value, '$.orderDate') AS orderDate,\n    JSON_VALUE(o.value, '$.orderSource') AS orderSource,\n    JSON_VALUE(o.value, '$.customerDevice') AS CustomerDevice,\n    JSON_VALUE(o.value, '$.deliveryAddress[0]') AS DeliveryAddress,\n    JSON_VALUE(d.value, '$.productID') AS productID,\n    JSON_VALUE(d.value, '$.orderQuantity') AS orderQuantity\nFROM OPENJSON(@json) o\nCROSS APPLY OPENJSON(o.value, '$.orderDetails') d;\n\nCREATE EXTERNAL TABLE Sales (\n    orderId INT,\n    orderDate DATE,\n    orderSource VARCHAR(50),\n    customerDevice VARCHAR(50),\n    DeliveryAddress VARCHAR(100),\n    productID INT,\n    orderQuantity INT\n)\nWITH\n(\n   LOCATION = 'jsoncontainer/sales.json',\n   DATA_SOURCE = [OlamideLakeDataSource],\n   FILE_FORMAT = [JsonFormat]\n)\n\n\n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "Olamidemssqltips",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

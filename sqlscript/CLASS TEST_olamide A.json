@@ -1,0 +1,17 @@
+{
+	"name": "CLASS TEST_olamide A",
+	"properties": {
+		"content": {
+			"query": "CREATE TABLE dbo.Sales (\nsaleId INT,\nproductId INT,\ncustomerId INT,\nquantity INT,\nsaledate DATE\n);\n\nCREATE TABLE dbo.Products (\nproductId INT,\nProductName NVARCHAR(100),\ncategory NVARCHAR(100),\nprice FLOAT\n);\n\nCREATE TABLE dbo.Customers (\ncustomerId INT,\nFirstName NVARCHAR(100),\nLastName NVARCHAR(100),\nRegionID INT\n);\nCREATE TABLE dbo.Region (\nRegionID INT,\nRegionName NVARCHAR (100)\n)\nCOPY INTO dbo.Products\nFROM 'https://storagedatalakeengineer.blob.core.windows.net/data/products (5).csv'\nWITH (\nFILE_TYPE = 'CSV',\nCREDENTIAL=(IDENTITY= 'Shared Access Signature', SECRET='sv=2024-11-04&ss=bfqt&srt=sco&sp=rwdlacupyx&se=2025-06-01T06:29:16Z&st=2025-05-31T22:29:16Z&spr=https&sig=RY%2B6ctYvejy3Zl9ax9pYpd6Mg%2FhvpZakNzVCAjHAhj0%3D'),\nFIELDTERMINATOR = ',',\nROWTERMINATOR = '0x0A',\nFIRSTROW = 2\n\n);\n\nCOPY INTO dbo.Customers\nFROM 'https://storagedatalakeengineer.blob.core.windows.net/data/customers (4).csv'\nWITH (\nFILE_TYPE = 'CSV',\nCREDENTIAL=(IDENTITY= 'Shared Access Signature', SECRET='sv=2024-11-04&ss=bfqt&srt=sco&sp=rwdlacupyx&se=2025-06-01T06:29:16Z&st=2025-05-31T22:29:16Z&spr=https&sig=RY%2B6ctYvejy3Zl9ax9pYpd6Mg%2FhvpZakNzVCAjHAhj0%3D'),\nFIELDTERMINATOR = ',',\nROWTERMINATOR = '0x0A',\nFIRSTROW = 2\n\n);\n\nCOPY INTO dbo.Region\nFROM 'https://storagedatalakeengineer.blob.core.windows.net/data/region.csv'\nWITH (\nFILE_TYPE = 'CSV',\nCREDENTIAL=(IDENTITY= 'Shared Access Signature', SECRET='sv=2024-11-04&ss=bfqt&srt=sco&sp=rwdlacupyx&se=2025-06-01T06:29:16Z&st=2025-05-31T22:29:16Z&spr=https&sig=RY%2B6ctYvejy3Zl9ax9pYpd6Mg%2FhvpZakNzVCAjHAhj0%3D'),\nFIELDTERMINATOR = ',',\nROWTERMINATOR = '0x0A',\nFIRSTROW = 2\n);\nCOPY INTO dbo.Sales\nFROM 'https://storagedatalakeengineer.blob.core.windows.net/data/sales (1).csv'\nWITH (\nFILE_TYPE = 'CSV',\nCREDENTIAL=(IDENTITY= 'Shared Access Signature', SECRET='sv=2024-11-04&ss=bfqt&srt=sco&sp=rwdlacupyx&se=2025-06-01T06:29:16Z&st=2025-05-31T22:29:16Z&spr=https&sig=RY%2B6ctYvejy3Zl9ax9pYpd6Mg%2FhvpZakNzVCAjHAhj0%3D'),\nFIELDTERMINATOR = ',',\nROWTERMINATOR = '0x0A',\nFIRSTROW = 2\n);\n\n\nSELECT \n    CONCAT(c.firstname, ' ', c.lastname) AS CustomerName,\n    r.regionname AS Region,\n    p.Productname AS ProductName,\n    s.quantity AS Quantity,\n    p.Price AS Price,\n    (s.quantity * p.Price) AS TotalAmountSold\nFROM sales s\nJOIN customers c ON s.customerid = c.customerid\nJOIN region r ON c.regionid = r.regionid\nJOIN Products p ON s.productid = p.productid;\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "Olamidededicated",
+				"poolName": "Olamidededicated"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

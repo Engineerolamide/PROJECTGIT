@@ -1,0 +1,17 @@
+{
+	"name": "CDC PROJECT SQL SCRIPT",
+	"properties": {
+		"content": {
+			"query": "\n\nCREATE TABLE DimProduct_SCD2 (\n    ProductSK INT IDENTITY(1,1) NOT NULL,\n    ProductID INT,\n    ProductName VARCHAR(100),\n    Price DECIMAL(10,2),\n    ValidFrom DATETIME,       -- remove DEFAULT GETDATE()\n    ValidTo DATETIME NULL,\n    IsCurrent BIT DEFAULT 1,\n    CONSTRAINT UQ_ProductID UNIQUE (ProductID) NOT ENFORCED\n);\nselect * from DimProduct_SCD2\n\nCREATE TABLE Staging_CDC_Products (\n    ProductID INT,\n    ProductName VARCHAR(100),\n    Price DECIMAL(10,2)\n);\nselect * from Staging_CDC_Products\n\nCREATE PROCEDURE sp_ProcessProductChanges\nAS\nBEGIN\n    -- Close old records\n    UPDATE DimProduct_SCD2\n    SET ValidTo = GETDATE(), IsCurrent = 0\n    WHERE ProductID IN (SELECT ProductID FROM Staging_CDC_Products)\n      AND IsCurrent = 1;\n\n    -- Insert new records\n    INSERT INTO DimProduct_SCD2 (ProductID, ProductName, Price, ValidFrom, IsCurrent)\n    SELECT ProductID, ProductName, Price, GETDATE(), 1\n    FROM Staging_CDC_Products;\nEND;\n\nSELECT * \nFROM sys.procedures \nWHERE name = 'usp_UpdateDimProduct_SCD2'\n\n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "OlamideDedicated",
+				"poolName": "OlamideDedicated"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

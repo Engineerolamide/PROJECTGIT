@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 1000003",
+	"properties": {
+		"content": {
+			"query": "CREATE TABLE dbo.Suppliers (\nSupplierID int ,CompanyName VARCHAR(50),ContactName VARCHAR(50) ,\nContactTitle VARCHAR(50),\nAddress VARCHAR(50),City VARCHAR(50),Region VARCHAR(50) ,\nPostalCode VARCHAR(50),\nCountry VARCHAR(50),\nPhone VARCHAR(50) ,Fax VARCHAR(50),HomePage VARCHAR(500))\n\nselect * from Suppliers",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "olamidededicated",
+				"poolName": "olamidededicated"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

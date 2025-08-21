@@ -1,0 +1,18 @@
+{
+	"name": "Project7 SCRIPT_b",
+	"properties": {
+		"description": "CREATE",
+		"content": {
+			"query": "\n\nCREATE EXTERNAL TABLE Saler\n(\n    OrderID INT,\n    OrderDate DATE,\n    OrderSource NVARCHAR(50),\n    CustomerDevice NVARCHAR(50),\n    DeliveryAddress NVARCHAR(100),\n    ProductID INT,\n    OrderQuantity INT\n\n)\nWITH\n(\n   LOCATION = 'jsoncontainer/sales.json',\n   DATA_SOURCE = [OlamideLakeDataSource],\n   FILE_FORMAT = [OlamideJsonFormat]\n)\nGO\n\nCREATE EXTERNAL FILE FORMAT OlamideJsonFormat\nWITH (\n    FORMAT_TYPE = DELIMITEDTEXT,\n    FORMAT_OPTIONS (\n        FIELD_TERMINATOR = '0x0',\n        STRING_DELIMITER = '\"',\n        ENCODING = 'UTF8'\n    )\n);\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "Olamidemssqltips",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

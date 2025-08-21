@@ -1,0 +1,17 @@
+{
+	"name": "SQL _script SalesGold",
+	"properties": {
+		"content": {
+			"query": "CREATE TABLE SalesGold(CustomerID BIGINT, Product VARCHAR (500),\n Retailer VARCHAR (500), SalesMonth DATE,\n UnitsSold INT , Revenue FLOAT , SalesValueUSD FLOAT, TotalRevenue FLOAT)\n\n SELECT * FROM SalesGold\n\n\n\n\n EXEC sp_rename 'dbo.SalesGold.UnitSold', 'UnitsSold', 'COLUMN';\n\n\n GRANT INSERT, SELECT ON SalesGold TO Olamide",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "SalesGoldDedicated",
+				"poolName": "SalesGoldDedicated"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

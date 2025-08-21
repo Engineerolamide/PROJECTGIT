@@ -1,0 +1,17 @@
+{
+	"name": "PROJECT 7 SCRIPT_a",
+	"properties": {
+		"content": {
+			"query": "CREATE DATABASE Olamidesqltips;\nCREATE EXTERNAL DATA SOURCE [OlamideDataSource] \nWITH \n(\n   LOCATION = 'https://storagedatalakeengineer.blob.core.windows.net'\n)\nCREATE EXTERNAL FILE FORMAT [DelimitedFile]\nWITH \n( \n   FORMAT_TYPE = DELIMITEDTEXT ,\n   FORMAT_OPTIONS \n   (\n      FIELD_TERMINATOR = '|',\n      USE_TYPE_DEFAULT = FALSE\n   )\n)\nCREATE EXTERNAL FILE FORMAT [ParquetFile]\nWITH\n( \n   FORMAT_TYPE = PARQUET\n)\nCREATE EXTERNAL TABLE dim_currency\n(\n        CurrencyKey int,\n   CurrencyAlternateKey nvarchar(30),\n   CurrencyName nvarchar(50)\n)\nWITH\n(\n   LOCATION = 'jminerproject7/csv-files/DimCurrency.csv',\n   DATA_SOURCE = [OlamideDataSource],\n   FILE_FORMAT = [DelimitedFile]\n)\nCREATE EXTERNAL TABLE fact_internet_sale\n(\n   [ProductKey] [int],\n   [OrderDateKey] [int],\n   [DueDateKey] [int],\n   [ShipDateKey] [int],\n   [CustomerKey] [int],\n   [PromotionKey] [int],\n   [CurrencyKey] [int],\n   [SalesTerritoryKey] [int],\n   [SalesOrderNumber] [nvarchar](200),\n   [SalesOrderLineNumber] [tinyint],\n   [RevisionNumber] [tinyint],\n   [OrderQuantity] [smallint],\n   [UnitPrice] [money],\n   [ExtendedAmount] [money],\n   [UnitPriceDiscountPct] DECIMAL(19, 4),\n   [DiscountAmount] DECIMAL(19, 4),\n   [ProductStandardCost] [money],\n   [TotalProductCost] [money],\n   [SalesAmount] [money],\n   [TaxAmt] [money],\n   [Freight] [money],\n   [CarrierTrackingNumber] [nvarchar](250),\n   [CustomerPONumber] [nvarchar](250),\n   [OrderDate] [datetime],\n   [DueDate] [datetime],\n   [ShipDate] [datetime]\n)\nWITH\n(\n   LOCATION = 'jminerproject7/parquet-files/FactInternetSale.part01.parquet',\n   DATA_SOURCE = [OlamideDataSource],\n        FILE_FORMAT = [ParquetFile]\n)\nCREATE MASTER KEY ENCRYPTION BY PASSWORD='alwaysonpoint27@';\nCREATE DATABASE SCOPED CREDENTIAL [OlamideCredential]\nWITH IDENTITY = 'SHARED ACCESS SIGNATURE',\nSECRET = 'sv=2024-11-04&ss=bfqt&srt=sco&sp=rwdlacupyx&se=2025-05-30T15:05:55Z&st=2025-05-30T07:05:55Z&spr=https&sig=dWMzG7jo2p%2ByqkyAqfIMyN1Hqfp2%2FbGnR784%2B5tZKfU%3D'\n\nSELECT NAME FROM sys.database_scoped_credentials;\n \nCREATE SCHEMA [OlamideSalesLT];\n\nCREATE EXTERNAL TABLE [OlamideSalesLT].[dim_currency]\n(\n   [CurrencyKey] [int],\n   [CurrencyAlternateKey] [nvarchar](30),\n   [CurrencyName] [nvarchar](50)\n)\nWITH\n(\n   LOCATION = 'jminerproject7/parquet-files/DimCurrency.parquet',\n   DATA_SOURCE = [OlamideDataSource],\nFILE_FORMAT = [ParquetFile]\n)\n\nSELECT * FROM [OlamideSalesLT].[dim_currency];\n\n    SELECT f.UnitPrice, f.OrderDate, f.OrderQuantity, c.CurrencyKey, c.CurrencyName\n    FROM dbo.fact_internet_sale f\n    INNER JOIN OlamideSalesLT.dim_currency c \n    ON f.CurrencyKey = c.CurrencyKey\n\nCREATE USER [OLAMIDE] FROM LOGIN [OLAMIDE]\nALTER ROLE db_datareader ADD MEMBER [OLAMIDE];\nGRANT CONTROL ON DATABASE SCOPED CREDENTIAL :: [OlamideCredential] TO [Olamide];\n\n\n\n\n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "Olamidesqltips",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

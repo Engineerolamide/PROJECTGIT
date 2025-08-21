@@ -1,0 +1,17 @@
+{
+	"name": "SQL script SalesGold",
+	"properties": {
+		"content": {
+			"query": "\nCREATE TABLE SalesGold(CustomerID BIGINT, Product VARCHAR (500), SalesMonth DATE,\nUnitsSold INT , Revenue FLOAT, SalesValueUSD FLOAT, TotalRevenue FLOAT)\n\nselect * from SalesGold",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "SalesGoldDedicated",
+				"poolName": "SalesGoldDedicated"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
