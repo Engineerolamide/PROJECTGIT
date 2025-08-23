@@ -1,0 +1,20 @@
+{
+	"name": "Parquetmedalion",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "lsAzureDataLakeStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "bronze",
+				"fileSystem": "projectmedalion"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
